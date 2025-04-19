@@ -88,16 +88,12 @@ const [selectedUserId, setSelectedUserId] = useState(null);
         
         // Similar validación para roles y permisos...
         const responseRoles = await fetch('https://farmacia20250407113355.azurewebsites.net/api/Roles/ListarRoles');
-        if (!responseRoles.ok) {
-          throw new Error(`HTTP error! status: ${responseRoles.status}`);
-        }
+       
         const dataRoles = await responseRoles.json();
         setRoles(dataRoles);
   
         const responsePermissions = await fetch('https://farmacia20250407113355.azurewebsites.net/api/Permisos/ListarPermisos');
-        if (!responsePermissions.ok) {
-          throw new Error(`HTTP error! status: ${responsePermissions.status}`);
-        }
+    
         const dataPermissions = await responsePermissions.json();
         setPermissions(dataPermissions);
   
@@ -460,10 +456,11 @@ const handleReset = () => {
         </CardContent>
       </Card>
       {showPermissionsModal && (
-  <div className="modal-overlay">
-    <div className="modal">
-      <h3 className="text-xl font-semibold mb-4 ">Editar Permisos</h3>
-      <div className="permissions-list">
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-lg shadow-lg  max-w-md p-6">
+      <h3 className="text-xl font-semibold mb-6 text-gray-800">Editar Permisos</h3>
+      
+      <div className="space-y-3 mb-6">
         {[
           'Configuración',
           'Usuarios',
@@ -476,40 +473,45 @@ const handleReset = () => {
           'Laboratorios'
         ].map((permission) => {
           const permissionNumber = permissionsMap[permission];
-
+          
           return (
-            <div key={permission} className="permission-item">
+            <div key={permission} className="flex items-center">
               <input
                 type="checkbox"
-                checked={selectedPermissions.includes(permissionNumber)} // Verifica si el permiso está seleccionado
-                onChange={() => handlePermissionsChange(permission)} // Cambia el estado cuando se selecciona un permiso
+                id={`permission-${permission}`}
+                checked={selectedPermissions.includes(permissionNumber)}
+                onChange={() => handlePermissionsChange(permission)}
+                className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
               />
-              <label className="ml-2">{permission}</label>
+              <label htmlFor={`permission-${permission}`} className="ml-3 text-gray-700">
+                {permission}
+              </label>
             </div>
           );
         })}
       </div>
-      <div className="modal-footer">
-        <button 
-          className="btn btn-primary" 
-          style={{background:'blue'}}
-          onClick={handleUpdatePermissions}
-        >
-          Modificar Cambios
-        </button>
-        <button 
-          className="btn btn-secondary bg-red"
+      
+      <div className="flex justify-end space-x-3">
+        <button
           onClick={() => {
             setShowPermissionsModal(false);
-            setSelectedPermissions([]); // Limpiar los permisos seleccionados
+            setSelectedPermissions([]);
           }}
+          className="px-4 py-2 bg-red text-white rounded hover:bg-red-600 transition-colors"
         >
           Cancelar
+        </button>
+        <button
+          onClick={handleUpdatePermissions}
+          className="px-4 py-2 bg-blue text-white rounded hover:bg-blue-700 transition-colors"
+        >
+          Modificar Cambios
         </button>
       </div>
     </div>
   </div>
 )}
+
     </div>
     </div>
     

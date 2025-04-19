@@ -249,34 +249,34 @@ const DashboardHome: React.FC = () => {
 
           {/* Estadísticas */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {stats.map((stat) => (
-              <Card key={stat.title} className="stat-card">
-                <CardContent className="stat-content">
-                  <div className={`stat-icon-container ${stat.bgColor}`}>
-                    <stat.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="stat-text">
-                    <h3 className="text-sm font-medium text-gray-600">
-                      {stat.title}
-                    </h3>
-                    <p className="text-2xl font-semibold">{stat.value}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+  {stats.map((stat) => (
+    <Card key={stat.title} className="stat-card">
+      <CardContent className="stat-content flex items-center gap-4"> {/* Cambio aquí */}
+        <div className={`stat-icon-container ${stat.bgColor}`}>
+          <stat.icon className="h-9 w-9 text-black" />
+        </div>
+        <div className="stat-text">
+          <h3 className="text-sm font-bold text-gray-600">
+            {stat.title}
+          </h3>
+          <p className="text-2xl font-semibold">{stat.value}</p>
+        </div>
+      </CardContent>
+    </Card>
+  ))}
+</div>
 
           {/* Gráfico de ingresos mensuales */}
           <Card className="mb-8 shadow-lg">
             <CardHeader
               style={{ background: "blue" }}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg"
+              className="bg-gradient-to-r from-blue to-purple-600 text-white rounded-t-lg"
             >
               <div className="flex justify-between items-center">
                 <CardTitle className="text-xl">Ingresos Mensuales</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="h-[300px] p-4">
+            <CardContent className="h-[380px] p-4">
               <BarChart
                 dataset={ingresosMensuales}
                 xAxis={[
@@ -316,14 +316,14 @@ const DashboardHome: React.FC = () => {
                   Stock Mínimo
                 </CardTitle>
               </CardHeader>
-              <CardContent className="h-[350px] p-4">
+              <CardContent className="h-[300px] p-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={stockMinimoData}
                       cx="50%"
                       cy="50%"
-                      outerRadius={100}
+                      outerRadius={60}
                       fill="#8884d8"
                       dataKey="value"
                       label={({ name, value }) => `${name}: ${value}%`}
@@ -348,15 +348,15 @@ const DashboardHome: React.FC = () => {
                   Productos más vendidos
                 </CardTitle>
               </CardHeader>
-              <CardContent className="h-[350px] p-4">
+              <CardContent className="h-[300px] p-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={masVendidosData}
                       cx="50%"
                       cy="50%"
-                      outerRadius={100}
-                      innerRadius={60}
+                      outerRadius={60}
+                      innerRadius={30}
                       fill="#8884d8"
                       dataKey="value"
                       label={({ name, value }) => `${name}: ${value}%`}

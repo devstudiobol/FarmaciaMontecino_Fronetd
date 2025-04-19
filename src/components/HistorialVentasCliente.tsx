@@ -238,7 +238,7 @@ function HistorialVentasCliente() {
       { align: "right" }
     );
 
-    doc.save("proforma_venta.pdf");
+    doc.save(`proforma ${selectedUser?.nombre} ${selectedUser?.apellido}_${selectedVenta?.fecha}.pdf`);
   };
 
   const filteredVentas = ventas.filter((venta) => {
@@ -363,8 +363,8 @@ function HistorialVentasCliente() {
             </div>
 
             {usuario.length > 0 && (
-              <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg mb-6">
-                <div>
+              <div className="flex gap-6 p-4 bg-gray-50 rounded-lg">
+                  <div>
                   <span className="text-sm text-gray-500">Cliente:</span>
                   <p className="font-medium">
                     {usuario.find(

@@ -29,7 +29,7 @@ const Login: React.FC = () => {
             if (!responseCliente.ok) {
                 // If the first API fails, try the second API
                 const responseEmpleado = await fetch(urlEmpleado, {
-                    method: 'POST',
+                    method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                     },
