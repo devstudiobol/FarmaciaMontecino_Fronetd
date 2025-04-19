@@ -1,0 +1,184 @@
+/* Fondo general */
+body {
+  background-color: #f8fafc; /* Gris claro de fondo */
+  color: #333; /* Color de texto */
+}
+
+/* Banner de bienvenida */
+.bg-gradient-to-r {
+  background: linear-gradient(135deg, #6b5b95, #8d7c9d); /* Mejorar el fondo del banner */
+}
+
+.bg-gradient-to-r h1 {
+  color: #f1f5f9; /* Texto blanco claro */
+}
+
+.bg-gradient-to-r p {
+  color: #d1d5db; /* Texto gris más claro */
+}
+
+/* Tarjetas de estadísticas */
+.card {
+  background-color: #ffffff; /* Fondo blanco para las tarjetas */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Efecto hover en las tarjetas */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Sombra más fuerte en hover */
+}
+
+.card-content {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-content .icon {
+  width: 40px;
+  height: 40px;
+  background-color: #f3f4f6; /* Fondo suave para el icono */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-content .text {
+  flex-grow: 1;
+  text-align: right;
+}
+
+.card-content .text p {
+  margin: 0;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff; /* Fondo blanco para la tabla */
+}
+
+table th, table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb; /* Bordes suaves entre filas */
+}
+
+table th {
+  background-color: #f9fafb; /* Fondo gris claro para los encabezados */
+  font-weight: 600;
+}
+
+table tbody tr:hover {
+  background-color: #f3f4f6; /* Color de fondo en hover para filas */
+}
+
+/* Input de búsqueda */
+input {
+  background-color: #e5e7eb; /* Fondo gris para el input */
+  color: #4b5563; /* Texto oscuro para el input */
+  border-radius: 8px;
+  padding-left: 30px; /* Espacio para el icono de búsqueda */
+  padding-right: 10px;
+  height: 40px;
+  border: none;
+}
+
+input::placeholder {
+  color: #9ca3af; /* Color del placeholder */
+}
+
+/* Estilo de botones */
+button {
+  background-color: #f9fafb; /* Fondo blanco para los botones */
+  color: #4b5563; /* Texto oscuro */
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background-color: #e5e7eb; /* Fondo gris claro en hover */
+}
+
+button:disabled {
+  background-color: #d1d5db; /* Fondo deshabilitado */
+  cursor: not-allowed;
+}
+
+/* Gráfico de barras */
+.pie-chart-container {
+  background-color: #ffffff; /* Fondo blanco para el contenedor */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+}
+
+.pagination button {
+  background-color: #eff6ff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #dbeafe;
+}
+
+.pagination .disabled {
+  background-color: #e5e7eb;
+  cursor: not-allowed;
+}
+
+/* Bordes y márgenes */
+.card-header, .card-title {
+  padding: 16px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
