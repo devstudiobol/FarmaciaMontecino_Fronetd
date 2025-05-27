@@ -56,7 +56,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
 
 
   useEffect(() => {
-    fetch("https://farmacia20250407113355.azurewebsites.net/api/Clientes/ListarClientesActivos")
+    fetch("http://localhost:5000/api/Clientes/ListarClientesActivos")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al obtener los clientes");
@@ -90,7 +90,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
   
     try {
       const response = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Clientes/Crear?nombre=${newNombre}&apellido=${newApellido}&telefono=${newTelefono}&direccion=${newDireccion}`,
+        `tps://farmacia20250407113355.azurewebsites.net/api/Clientes/Crear?nombre=${newNombre}&apellido=${newApellido}&telefono=${newTelefono}&direccion=${newDireccion}`,
         {
           method: "POST",
           headers: {
@@ -139,7 +139,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
     if (window.confirm('¿Está seguro de eliminar este cliente?')) {
       try {
         const response = await fetch(
-          `https://farmacia20250407113355.azurewebsites.net/api/Clientes/${id}`,
+          `http://localhost:5000/api/Clientes/${id}`,
           {
             method: "DELETE",
           }
@@ -184,7 +184,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
   
     try {
       const response = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Clientes/Actualizar?id=${editClient}&nombre=${newNombre}&apellido=${newApellido}&telefono=${newTelefono}&direccion=${newDireccion}`,
+        `http://localhost:5000/api/Clientes/Actualizar?id=${editClient}&nombre=${newNombre}&apellido=${newApellido}&telefono=${newTelefono}&direccion=${newDireccion}`,
         {
           method: "PUT",
           headers: {

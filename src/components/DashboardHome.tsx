@@ -76,7 +76,7 @@ const DashboardHome: React.FC = () => {
       try {
         // Obtener ingresos mensuales
         const responseIngresos = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Ventas/SumarTotalesPorMes"
+          "http://localhost:5000/api/Ventas/SumarTotalesPorMes"
         );
         const dataIngresos = await responseIngresos.json();
 
@@ -90,56 +90,56 @@ const DashboardHome: React.FC = () => {
 
         // Obtener productos activos
         const responseProductos = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Productos/ListarProductosActivos"
+          "http://localhost:5000/api/Productos/ListarProductosActivos"
         );
         const dataProductos = await responseProductos.json();
         setProductos(dataProductos.length);
 
         // Obtener tipos de productos
         const responseTipo = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Tipos/ListarTiposActivos"
+          "http://localhost:5000/api/Tipos/ListarTiposActivos"
         );
         const dataTipo = await responseTipo.json();
         setTipo(dataTipo);
 
         // Obtener presentaciones
         const responsePresentacion = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Presentaciones"
+          "http://localhost:5000/api/Presentaciones"
         );
         const dataPresentacion = await responsePresentacion.json();
         setPresentacion(dataPresentacion);
 
         // Obtener usuarios activos
         const responseUsuarios = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Usuarios/ListarUsuariosActivos"
+          "http://localhost:5000/api/Usuarios/ListarUsuariosActivos"
         );
         const dataUsuarios = await responseUsuarios.json();
         setUsuariosActivos(dataUsuarios.length);
 
         // Obtener clientes activos
         const responseClientes = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Clientes/ListarClientesActivos"
+          "http://localhost:5000/api/Clientes/ListarClientesActivos"
         );
         const dataClientes = await responseClientes.json();
         setClientes(dataClientes.length);
 
         // Obtener ventas activas
         const responseVentas = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Ventas/ListarVentasActivos"
+          "http://localhost:5000/api/Ventas/ListarVentasActivos"
         );
         const dataVentas = await responseVentas.json();
         setVentas(dataVentas.length);
 
         // Obtener productos con menor stock
         const responseMenorStock = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Productos/listarProductosConMenorStock"
+          "http://localhost:5000/api/Productos/listarProductosConMenorStock"
         );
         const dataMenorStock = await responseMenorStock.json();
         setProductosConMenorStock(dataMenorStock);
 
         // Obtener productos más vendidos
         const responseMasVendidos = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Detalle_Ventas/ProductosMasVendidos"
+          "http://localhost:5000/api/Detalle_Ventas/ProductosMasVendidos"
         );
         const dataMasVendidos = await responseMasVendidos.json();
 

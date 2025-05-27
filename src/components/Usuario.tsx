@@ -82,13 +82,13 @@ const Usuario: React.FC = () => {
       if (editMode) {
         // Si estamos en modo de edición, actualizamos el usuario
         response = await fetch(
-          `https://farmacia20250407113355.azurewebsites.net/api/Usuarios/Actualizar?id=${formData.id}&nombre=${formData.nombre}&correo=${formData.correo}&usuarionombre=${formData.usuarioNombre}&password=${formData.password}`,
+          `http://localhost:5000/api/Usuarios/Actualizar?id=${formData.id}&nombre=${formData.nombre}&correo=${formData.correo}&usuarionombre=${formData.usuarioNombre}&password=${formData.password}`,
           { method: "PUT" } // Usamos PUT para actualizar
         );
       } else {
         // Si no estamos en modo de edición, creamos un nuevo usuario
         response = await fetch(
-          `https://farmacia20250407113355.azurewebsites.net/api/Usuarios/Crear?nombre=${formData.nombre}&correo=${formData.correo}&usuarionombre=${formData.usuarioNombre}&password=${formData.password}&idrol=${formData.idrol}`,
+          `http://localhost:5000/api/Usuarios/Crear?nombre=${formData.nombre}&correo=${formData.correo}&usuarionombre=${formData.usuarioNombre}&password=${formData.password}&idrol=${formData.idrol}`,
           { method: "POST" }
         );
       }
@@ -123,7 +123,7 @@ const Usuario: React.FC = () => {
   const handleDelete = async (id: number) => {
     try {
       // Hacer la solicitud DELETE a la API
-      const response = await fetch(`https://farmacia20250407113355.azurewebsites.net/api/Usuarios/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/Usuarios/${id}`, {
         method: 'DELETE',
       });
   
@@ -189,7 +189,7 @@ const handlePageChange = (page: number) => {
 };
 
 useEffect(()=>{
-  fetch('https://farmacia20250407113355.azurewebsites.net/api/Usuarios/ListarUsuariosActivos').then((response) => {
+  fetch('http://localhost:5000/api/Usuarios/ListarUsuariosActivos').then((response) => {
     if (!response.ok) {
       throw new Error("Error al obtener los tipos");
     }

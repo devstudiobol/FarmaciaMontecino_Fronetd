@@ -51,14 +51,14 @@ function HistorialVentasProducto() {
     const fetchData = async () => {
       try {
         const responseProductos = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Productos/ListarProductosActivos"
+          "http://localhost:5000/api/Productos/ListarProductosActivos"
         );
         const dataProductos = await responseProductos.json();
         setProductos(dataProductos);
 
-        let url = "https://farmacia20250407113355.azurewebsites.net/api/Ventas/ListarVentasActivos";
+        let url = "http://localhost:5000/api/Ventas/ListarVentasActivos";
         if (fechaIni && fechaFin) {
-          url = `https://farmacia20250407113355.azurewebsites.net/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
+          url = `http://localhost:5000/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
         }
 
         const responseVentas = await fetch(url);

@@ -71,7 +71,7 @@ const [selectedUserId, setSelectedUserId] = useState(null);
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const responseUsers = await fetch('https://farmacia20250407113355.azurewebsites.net/api/Usuarios/ListarUsuariosActivos');
+        const responseUsers = await fetch('http://localhost:5000/api/Usuarios/ListarUsuariosActivos');
         
         if (!responseUsers.ok) {
           throw new Error(`HTTP error! status: ${responseUsers.status}`);
@@ -87,12 +87,12 @@ const [selectedUserId, setSelectedUserId] = useState(null);
         setUsers(dataUsers);
         
         // Similar validación para roles y permisos...
-        const responseRoles = await fetch('https://farmacia20250407113355.azurewebsites.net/api/Roles/ListarRoles');
+        const responseRoles = await fetch('http://localhost:5000/api/Roles/ListarRoles');
        
         const dataRoles = await responseRoles.json();
         setRoles(dataRoles);
   
-        const responsePermissions = await fetch('https://farmacia20250407113355.azurewebsites.net/api/Permisos/ListarPermisos');
+        const responsePermissions = await fetch('http://localhost:5000/api/Permisos/ListarPermisos');
     
         const dataPermissions = await responsePermissions.json();
         setPermissions(dataPermissions);
@@ -145,7 +145,7 @@ const handlePermissionsClick = async (userId) => {
 
   try {
     // Hacer la solicitud para obtener los permisos del usuario
-    const response = await fetch(`https://farmacia20250407113355.azurewebsites.net/api/Detalle_Permisos/ListarDetallePermisosActivosUsuario?id=${userId}`);
+    const response = await fetch(`http://localhost:5000/api/Detalle_Permisos/ListarDetallePermisosActivosUsuario?id=${userId}`);
     
     if (!response.ok) {
       throw new Error('Error al obtener los permisos del usuario');
@@ -177,7 +177,7 @@ const handleUpdatePermissions = async () => {
 
     console.log("Datos enviados al backend:", requestBody); // Depuración
 
-    const response = await fetch(`https://farmacia20250407113355.azurewebsites.net/api/Detalle_Permisos/Crear`, {
+    const response = await fetch(`http://localhost:5000/api/Detalle_Permisos/Crear`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -201,7 +201,7 @@ const handleUpdatePermissions = async () => {
 const totalPages = Math.ceil(users.length / itemsPerPage);
 const fetchUsers = async () => {
   try {
-    const response = await fetch('https://farmacia20250407113355.azurewebsites.net/api/Usuarios/ListarUsuariosActivos');
+    const response = await fetch('http://localhost:5000/api/Usuarios/ListarUsuariosActivos');
     if (!response.ok) {
       throw new Error('Error al obtener los usuarios');
     }
@@ -228,8 +228,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
   try {
     const url = editMode
-      ? `https://farmacia20250407113355.azurewebsites.net/api/Usuarios/Actualizar?id=${formData.id}&nombre=${formData.nombre}&correo=${formData.correo}&usuarioNombre=${formData.usuarioNombre}&password=${formData.password}&estado=${formData.estado}&idrol=${formData.idrol}`
-      : `https://farmacia20250407113355.azurewebsites.net/api/Usuarios/Crear?nombre=${formData.nombre}&correo=${formData.correo}&usuarioNombre=${formData.usuarioNombre}&password=${formData.password}&estado=${formData.estado}&idrol=${formData.idrol}`;
+      ? `http://localhost:5000/api/Usuarios/Actualizar?id=${formData.id}&nombre=${formData.nombre}&correo=${formData.correo}&usuarioNombre=${formData.usuarioNombre}&password=${formData.password}&estado=${formData.estado}&idrol=${formData.idrol}`
+      : `http://localhost:5000/api/Usuarios/Crear?nombre=${formData.nombre}&correo=${formData.correo}&usuarioNombre=${formData.usuarioNombre}&password=${formData.password}&estado=${formData.estado}&idrol=${formData.idrol}`;
 
     const response = await fetch(url, {
       method: editMode ? 'PUT' : 'POST',
@@ -253,7 +253,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 const handleDelete = async (id: number) => {
   if (window.confirm('¿Está seguro de eliminar este usuario?')) {
     try {
-      const response = await fetch(`https://farmacia20250407113355.azurewebsites.net/api/Usuarios/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/Usuarios/${id}`, {
         method: 'DELETE'
       });
 

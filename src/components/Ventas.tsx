@@ -142,25 +142,25 @@ function Ventas() {
     const fetchData = async () => {
       try {
         const responseProductos = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Productos/ListarProductosActivos"
+          "http://localhost:5000/api/Productos/ListarProductosActivos"
         );
         const dataProductos = await responseProductos.json();
         setProducto(dataProductos);
 
         const responseVentas = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Ventas/ListarVentasActivos"
+          "http://localhost:5000/api/Ventas/ListarVentasActivos"
         );
         const dataVentas = await responseVentas.json();
         setVenta(dataVentas);
 
         const responseUsuario = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Clientes/ListarClientesActivos"
+          "http://localhost:5000/api/Clientes/ListarClientesActivos"
         );
         const dataUsuarios = await responseUsuario.json();
         setUsuarios(dataUsuarios);
 
         const responseDVenta = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Detalle_Ventas/ListarDetalleVentasActivos"
+          "http://localhost:5000/api/Detalle_Ventas/ListarDetalleVentasActivos"
         );
         const dataDventa = await responseDVenta.json();
         setDVenta(dataDventa);
@@ -169,19 +169,19 @@ function Ventas() {
       }
 
       const responseTipos = await fetch(
-        "https://farmacia20250407113355.azurewebsites.net/api/Tipos/ListarTiposActivos"
+        "http://localhost:5000/api/Tipos/ListarTiposActivos"
       );
       const dataTipos = await responseTipos.json();
       setTipos(dataTipos);
 
       const responseLaboratorios = await fetch(
-        "https://farmacia20250407113355.azurewebsites.net/api/Laboratorios/ListarLaboratoriosActivos"
+        "http://localhost:5000/api/Laboratorios/ListarLaboratoriosActivos"
       );
       const dataLaboratorios = await responseLaboratorios.json();
       setLaboratorio(dataLaboratorios);
 
       const responsePresentacion = await fetch(
-        "https://farmacia20250407113355.azurewebsites.net/api/Presentaciones/ListarPresentacionesActivos"
+        "http://localhost:5000/api/Presentaciones/ListarPresentacionesActivos"
       );
       const dataPresentacion = await responsePresentacion.json();
       setPresentacion(dataPresentacion);
@@ -237,7 +237,7 @@ function Ventas() {
     try {
       // Crear la venta
       const responseVenta = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Ventas/Crear?${queryParams}`,
+        `http://localhost:5000/api/Ventas/Crear?${queryParams}`,
         {
           method: "POST",
         }
@@ -268,7 +268,7 @@ function Ventas() {
 
         // Crear el detalle de la venta
         const responseDetalle = await fetch(
-          `https://farmacia20250407113355.azurewebsites.net/api/Detalle_Ventas/Crear?${queryParamsDetalle}`,
+          `http://localhost:5000/api/Detalle_Ventas/Crear?${queryParamsDetalle}`,
           {
             method: "POST",
           }

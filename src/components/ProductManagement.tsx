@@ -89,10 +89,10 @@ const ProductManagement: React.FC = () => {
     const fetchData = async () => {
       try {
         const [productsRes, tiposRes, laboratoriosRes, presentacionRes] = await Promise.all([
-          fetch("https://farmacia20250407113355.azurewebsites.net/api/Productos/ListarProductosActivos"),
-          fetch("https://farmacia20250407113355.azurewebsites.net/api/Tipos/ListarTiposActivos"),
-          fetch("https://farmacia20250407113355.azurewebsites.net/api/Laboratorios/ListarLaboratoriosActivos"),
-          fetch("https://farmacia20250407113355.azurewebsites.net/api/Presentaciones/ListarPresentacionesActivos")
+          fetch("http://localhost:5000/api/Productos/ListarProductosActivos"),
+          fetch("http://localhost:5000/api/Tipos/ListarTiposActivos"),
+          fetch("http://localhost:5000/api/Laboratorios/ListarLaboratoriosActivos"),
+          fetch("http://localhost:5000/api/Presentaciones/ListarPresentacionesActivos")
         ]);
 
         const [dataProductos, dataTipos, dataLaboratorios, dataPresentacion] = await Promise.all([
@@ -135,7 +135,7 @@ const ProductManagement: React.FC = () => {
   // Manejar eliminación de producto
   const handleEliminar = async (id: number) => {
     try {
-      const response = await fetch(`https://farmacia20250407113355.azurewebsites.net/api/Productos/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/api/Productos/${id}`, {
         method: 'DELETE',
       });
 
@@ -164,7 +164,7 @@ const ProductManagement: React.FC = () => {
 
     try {
       const response = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Productos/Crear?codigo=${formData.codigo}&nombre=${formData.nombre}&descripcion=${formData.descripcion}&precio=${formData.precio}&stock=${formData.stock}&vencimiento=${formData.vencimiento}&idtipo=${formData.idtipo}&idlaboratorio=${formData.idlaboratorio}&concentracion=${formData.concentracion}&casilla=${formData.casilla}&idpresentacion=${formData.idpresentacion}`,
+        `http://localhost:5000/api/Productos/Crear?codigo=${formData.codigo}&nombre=${formData.nombre}&descripcion=${formData.descripcion}&precio=${formData.precio}&stock=${formData.stock}&vencimiento=${formData.vencimiento}&idtipo=${formData.idtipo}&idlaboratorio=${formData.idlaboratorio}&concentracion=${formData.concentracion}&casilla=${formData.casilla}&idpresentacion=${formData.idpresentacion}`,
         {
           method: "POST",
           headers: {
@@ -212,7 +212,7 @@ const ProductManagement: React.FC = () => {
       params.append('idlaboratorio', formData.idlaboratorio?.toString() || '0');
       params.append('idtipo', formData.idtipo?.toString() || '0');
 
-      const url = `https://farmacia20250407113355.azurewebsites.net/api/Productos/Actualizar?${params.toString()}`;
+      const url = `http://localhost:5000/api/Productos/Actualizar?${params.toString()}`;
       
       const response = await fetch(url, {
         method: "PUT",

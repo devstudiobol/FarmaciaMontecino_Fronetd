@@ -1,7 +1,15 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-})
+  plugins: [react()], // ✅ Plugin de React activado
+  server: {
+    host: 'farmacia.local', // URL personalizada
+    port: 3000,
+  },
+  build: {
+    outDir: 'dist', // Asegura que la carpeta de salida sea 'dist'
+    emptyOutDir: true, // Limpia la carpeta antes de cada build
+  },
+  base: './', // ✅ Ruta relativa para evitar errores al desplegar
+});

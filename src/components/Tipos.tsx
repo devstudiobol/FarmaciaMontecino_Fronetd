@@ -53,7 +53,7 @@ function Tipos() {
   };
 
   useEffect(() => {
-    fetch("https://farmacia20250407113355.azurewebsites.net/api/Tipos/ListarTiposActivos")
+    fetch("http://localhost:5000/api/Tipos/ListarTiposActivos")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al obtener los tipos");
@@ -73,7 +73,7 @@ function Tipos() {
 
     try {
       const response = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Tipos/Crear?nombre=${encodeURIComponent(newName)}`,
+        `http://localhost:5000/api/Tipos/Crear?nombre=${encodeURIComponent(newName)}`,
         {
           method: "POST",
           headers: {
@@ -110,7 +110,7 @@ function Tipos() {
 
     try {
       const response = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Tipos/Actualizar?id=${editTipoId}&nombre=${encodeURIComponent(newName)}`,
+        `http://localhost:5000/api/Tipos/Actualizar?id=${editTipoId}&nombre=${encodeURIComponent(newName)}`,
         {
           method: "PUT",
           headers: {
@@ -140,7 +140,7 @@ function Tipos() {
   const handleEliminar = async (id: number) => {
     try {
       const response = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Tipos/${id}`,
+        `http://localhost:5000/api/Tipos/${id}`,
         {
           method: "DELETE",
         }

@@ -84,20 +84,20 @@ function HistorialVentasCliente() {
     const fetchData = async () => {
       try {
         const responseClientes = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Clientes/ListarClientesActivos"
+          "http://localhost:5000/api/Clientes/ListarClientesActivos"
         );
         const dataClientes = await responseClientes.json();
         setUsuario(dataClientes);
 
         const responseProducto = await fetch(
-          "https://farmacia20250407113355.azurewebsites.net/api/Productos/ListarProductosActivos"
+          "http://localhost:5000/api/Productos/ListarProductosActivos"
         );
         const dataProductos = await responseProducto.json();
         setProducto(dataProductos);
 
-        let url = "https://farmacia20250407113355.azurewebsites.net/api/Ventas/ListarVentasActivos";
+        let url = "http://localhost:5000/api/Ventas/ListarVentasActivos";
         if (fechaIni && fechaFin) {
-          url = `https://farmacia20250407113355.azurewebsites.net/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
+          url = `http://localhost:5000/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
         }
 
         const responseVentas = await fetch(url);
@@ -114,7 +114,7 @@ function HistorialVentasCliente() {
   const handlePdfClick = async (idventa: number) => {
     try {
       const responseDetalleVenta = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Ventas/listarVentaDetalleVenta?idventa=${idventa}`
+        `http://localhost:5000/api/Ventas/listarVentaDetalleVenta?idventa=${idventa}`
       );
       const dataDetalleVenta = await responseDetalleVenta.json();
       setDetalleVenta(dataDetalleVenta);
@@ -256,7 +256,7 @@ function HistorialVentasCliente() {
     if (window.confirm("¿Está seguro de eliminar esta venta?")) {
       try {
         const response = await fetch(
-          `https://farmacia20250407113355.azurewebsites.net/api/Ventas/${id}`,
+          `http://localhost:5000/api/Ventas/${id}`,
           {
             method: "DELETE",
           }

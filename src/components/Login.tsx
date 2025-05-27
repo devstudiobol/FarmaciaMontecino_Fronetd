@@ -16,8 +16,8 @@ const Login: React.FC = () => {
         }
 
         try {
-            const urlCliente = `https://farmacia20250407113355.azurewebsites.net/api/Usuarios/Login?correo=${correo}&password=${password}`;
-            const urlEmpleado = `https://farmacia20250407113355.azurewebsites.net/api/Usuarios/Login??correo=${correo}&password=${password}`;
+            const urlCliente = `http://localhost:5000/api/Usuarios/Login?correo=${correo}&password=${password}`;
+            const urlEmpleado = `http://localhost:5000/api/Usuarios/Login??correo=${correo}&password=${password}`;
 
             const responseCliente = await fetch(urlCliente, {
                 method: 'GET',

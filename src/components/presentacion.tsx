@@ -25,7 +25,7 @@ function Presentacion() {
 
   // Cargar tipos desde el backend al montar el componente
   useEffect(() => {
-    fetch("https://farmacia20250407113355.azurewebsites.net/api/Presentaciones/ListarPresentacionesActivos")
+    fetch("http://localhost:5000/api/Presentaciones/ListarPresentacionesActivos")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al obtener los tipos");
@@ -42,7 +42,7 @@ function Presentacion() {
 
     try {
       const response = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Presentaciones/Crear?nombre=${newName}&nombreCorto=${newShortName}`,
+        `http://localhost:5000/api/Presentaciones/Crear?nombre=${newName}&nombreCorto=${newShortName}`,
         {
           method: "POST",
           headers: {
@@ -78,7 +78,7 @@ function Presentacion() {
 
     try {
       const response = await fetch(
-        `https://farmacia20250407113355.azurewebsites.net/api/Presentaciones/Actualizar?id=${editTipoId}&nombre=${newName}&nombreCorto=${newShortName}`,
+        `http://localhost:5000/api/Presentaciones/Actualizar?id=${editTipoId}&nombre=${newName}&nombreCorto=${newShortName}`,
         {
           method: "PUT",
           headers: {
@@ -109,7 +109,7 @@ function Presentacion() {
 
   const handleEliminar = async (id: number) => {
     try {
-      const response = await fetch(`https://farmacia20250407113355.azurewebsites.net/api/Presentaciones/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/Presentaciones/${id}`, {
         method: "DELETE",
       });
 

@@ -44,7 +44,7 @@ const Configuracion: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://farmacia20250407113355.azurewebsites.net/api/Configuracions/ListarConfiguracionActivos');
+      const response = await fetch('http://localhost:5000/api/Configuracions/ListarConfiguracionActivos');
       if (!response.ok) {
         throw new Error('Error al obtener los datos');
       }
@@ -107,7 +107,7 @@ const Configuracion: React.FC = () => {
     }
 
     try {
-      const url = new URL('https://farmacia20250407113355.azurewebsites.net/api/Configuracions/Actualizar');
+      const url = new URL('http://localhost:5000/api/Configuracions/Actualizar');
       url.searchParams.append('id', newFormData.id);
       url.searchParams.append('nombre', newFormData.nombre);
       url.searchParams.append('telefono', newFormData.telefono);

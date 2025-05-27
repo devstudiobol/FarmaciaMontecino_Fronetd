@@ -27,7 +27,7 @@ function NavBarRoot() {
 
   const fetchUserPermissions = async (userId) => {
     try {
-      const response = await fetch(`https://farmacia20250407113355.azurewebsites.net/api/Detalle_Permisos/ListarDetallePermisosActivosUsuario?id=${userId}`);
+      const response = await fetch(`http://localhost:5000/api/Detalle_Permisos/ListarDetallePermisosActivosUsuario?id=${userId}`);
       if (!response.ok) {
         throw new Error('Error al obtener los permisos');
       }
