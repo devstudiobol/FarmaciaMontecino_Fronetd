@@ -49,7 +49,7 @@ interface Detalle_Ventas {
 interface Client {
   id: number;
   nombre: string;
-  apellido: string;
+  ci: string;
   telefono: string;
   direccion: string;
   eliminado?: boolean;
@@ -68,7 +68,13 @@ interface Producto {
   idlaboratorio: number;
   idtipo: number;
 }
-
+interface Configuracion {
+  id: string;
+  nombre: string;
+  telefono: string;
+  email: string;
+  direccion: string;
+}
 function HistorialVentasCliente() {
   const [ventas, setVentas] = useState<Venta[]>([]);
   const [search, setSearch] = useState("");
@@ -79,25 +85,31 @@ function HistorialVentasCliente() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fechaIni, setFechaIni] = useState<string>("");
   const [fechaFin, setFechaFin] = useState<string>("");
+  const [configuracion, setConfiguracion] = useState<Configuracion[]>([]);
+    useEffect(() => {
+    fetch('https://farmaciamontecino.onrender.com/api/Configuracions/ListarConfiguracionActivos')
+      .then(response => response.json())
+      .then(data => setConfiguracion(data))
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const responseClientes = await fetch(
-          "http://localhost:5000/api/Clientes/ListarClientesActivos"
+          "https://farmaciamontecino.onrender.com/api/Clientes/ListarClientesActivos"
         );
         const dataClientes = await responseClientes.json();
         setUsuario(dataClientes);
 
         const responseProducto = await fetch(
-          "http://localhost:5000/api/Productos/ListarProductosActivos"
+          "https://farmaciamontecino.onrender.com/api/Productos/ListarProductosActivos"
         );
         const dataProductos = await responseProducto.json();
         setProducto(dataProductos);
 
-        let url = "http://localhost:5000/api/Ventas/ListarVentasActivos";
+        let url = "https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasActivos";
         if (fechaIni && fechaFin) {
-          url = `http://localhost:5000/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
+          url = `https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
         }
 
         const responseVentas = await fetch(url);
@@ -114,7 +126,7 @@ function HistorialVentasCliente() {
   const handlePdfClick = async (idventa: number) => {
     try {
       const responseDetalleVenta = await fetch(
-        `http://localhost:5000/api/Ventas/listarVentaDetalleVenta?idventa=${idventa}`
+        `https://farmaciamontecino.onrender.com/api/Ventas/listarVentaDetalleVenta?idventa=${idventa}`
       );
       const dataDetalleVenta = await responseDetalleVenta.json();
       setDetalleVenta(dataDetalleVenta);
@@ -126,125 +138,111 @@ function HistorialVentasCliente() {
   };
 
   const generarPDF = () => {
-    const doc = new jsPDF();
-    const pageWidth = doc.internal.pageSize.width;
-    const pageHeight = doc.internal.pageSize.height;
-
-    doc.setFillColor(235, 247, 255);
-    doc.rect(0, 0, pageWidth, 40, "F");
-
-    doc.setFontSize(24);
-    doc.setTextColor(44, 62, 80);
-    doc.setFont("helvetica", "bold");
-    doc.text("FACTURA DE VENTA", pageWidth / 2, 20, { align: "center" });
-
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(52, 73, 94);
-    doc.text("FARMACIA MEDICITY S.A.", 14, 35);
-    doc.setFontSize(10);
-    doc.text("Dirección: Av. Principal #452", 14, 42);
-    doc.text("Tel: (951) 456-7890", 14, 48);
-
-    doc.setDrawColor(41, 128, 185);
-    doc.setLineWidth(0.5);
-    doc.line(14, 52, pageWidth - 14, 52);
-
+  try {
+    const doc = new jsPDF({
+      unit: 'mm',
+      format: [80, 197]
+    });
+    
+    const margin = 5;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const contentWidth = pageWidth - (2 * margin);
+    
+    doc.setFont("helvetica");
+    doc.setTextColor(0, 0, 0);
+    
+    {configuracion.map((item) => (
+            doc.text(`${item.nombre}`, margin + 19, 15),
+            doc.setFontSize(8),
+            doc.setFont(undefined, "normal"),
+            doc.text(`Direccion: ${item.direccion}`, margin + 15, 18),
+            doc.text(`Cel: ${item.telefono}`, margin + 24, 21)
+          ))};
+    // Número de factura
+    doc.setFontSize(8);
+    doc.text(`Recibo Nro: ${Math.floor(Math.random() * 1000000000)}`, margin, 26);
+    
+    // Línea separadora
+    doc.setDrawColor(0);
+    doc.setLineWidth(0.2);
+    doc.line(margin, 29, pageWidth - margin, 29);
+    
+    // Fecha y hora
+    const now = new Date();
+    const fecha = now.toLocaleDateString();
+    const hora = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    
+    // Información del cliente
     const selectedVenta = ventas.find((v) => v.id === selectedVentaId);
     const selectedUser = usuario.find((u) => u.id === selectedVenta?.idcliente);
-
-    doc.setFontSize(11);
-    doc.setFont("helvetica", "bold");
-    doc.text("INFORMACIÓN DEL CLIENTE", 14, 62);
-
-    doc.setFont("helvetica", "normal");
-    doc.text(
-      `Cliente: ${selectedUser?.nombre} ${selectedUser?.apellido}`,
-      14,
-      70
-    );
-    doc.text(`Teléfono: ${selectedUser?.telefono}`, 14, 76);
-    doc.text(
-      `Fecha: ${new Date(selectedVenta?.fecha || "").toLocaleDateString()}`,
-      pageWidth - 60,
-      70
-    );
-    doc.text(
-      `No. Proforma: ${Math.floor(Math.random() * 10000)}`,
-      pageWidth - 60,
-      76
-    );
-
-    doc.setFontSize(11);
-    doc.setFont("helvetica", "bold");
-    doc.text("DETALLE DE PRODUCTOS", 14, 90);
-
-    const tableColumn = ["Descripción", "Precio Unit.", "Cantidad", "Subtotal"];
-    const tableRows = detalleventa.map((detalle) => {
+    
+    doc.text(`Sr(a): ${selectedUser?.nombre} ${selectedUser?.ci}`.substring(0, 30), margin, 34);
+    doc.text(`CI/NIT: ${selectedUser?.ci}`.substring(0, 35), margin, 38);
+    
+    doc.text(`FECHA: ${fecha}`, margin, 42);
+    doc.text(`${hora}`, margin + 25, 42);
+    
+    doc.line(margin, 47, pageWidth - margin, 47);
+    
+    // Encabezados de tabla
+    doc.text("CANT", margin, 56);
+    doc.text("CONCEPTO", margin + 15, 56);
+    doc.text("P.U.", margin + 45, 56);
+    doc.text("IMP.", margin + 55, 56);
+    
+    // Detalles de productos
+    let yPos = 63;
+    detalleventa.forEach((detalle) => {
       const producto = productos.find((p) => p.id === detalle.idproducto);
-      return [
-        producto ? producto.nombre : "Producto no encontrado",
-        `Bs${detalle.precio.toFixed(2)}`,
-        detalle.cantidad,
-        `Bs${detalle.total.toFixed(2)}`,
-      ];
+      const nombreProducto = producto ? producto.nombre : "Producto no encontrado";
+      
+      doc.text(detalle.cantidad.toString(), margin, yPos);
+      doc.text(nombreProducto.substring(0, 20), margin + 15, yPos);
+      doc.text(detalle.precio.toFixed(2), margin + 45, yPos);
+      doc.text(detalle.total.toFixed(2), margin + 55, yPos);
+      
+      yPos += 7;
     });
-
-    doc.autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 95,
-      theme: "grid",
-      headStyles: {
-        fillColor: [41, 128, 185],
-        textColor: 255,
-        fontSize: 10,
-        halign: "center",
-      },
-      bodyStyles: {
-        fontSize: 9,
-        halign: "center",
-      },
-      columnStyles: {
-        0: { halign: "left" },
-      },
-      alternateRowStyles: {
-        fillColor: [245, 247, 250],
-      },
-    });
-
-    const finalY = doc.lastAutoTable.finalY || 150;
-    doc.setDrawColor(41, 128, 185);
-    doc.setLineWidth(0.5);
-    doc.line(pageWidth - 80, finalY + 10, pageWidth - 14, finalY + 10);
-
-    doc.setFont("helvetica", "bold");
-    doc.text("TOTAL:", pageWidth - 80, finalY + 18);
-    doc.text(
-      `${selectedVenta?.total.toFixed(2)} Bs`,
-      pageWidth - 25,
-      finalY + 18,
-      { align: "right" }
-    );
-
+    
+    // Línea separadora antes del total
+    doc.line(margin, yPos + 7, pageWidth - margin, yPos + 7);
+    yPos += 14;
+    
+    // Total
+    doc.setFont(undefined, "bold");
+    doc.text("TOTAL:", margin + 45, yPos);
+    doc.text(`${selectedVenta?.total.toFixed(2)} Bs`, margin + 55, yPos);
+    doc.setFont(undefined, "normal");
+    
+    yPos += 7;
+    
+    // Información del vendedor
+    doc.text(`Vendedor: ${name}`, margin, yPos);
+    yPos += 7;
+    
+    // Línea final
+    doc.line(margin, yPos + 2, pageWidth - margin, yPos + 2);
+    yPos += 10;
+    
+    // Mensaje de agradecimiento
     doc.setFontSize(8);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(128, 128, 128);
-    doc.text("Esta proforma es válida por 7 días.", 14, pageHeight - 20);
-    doc.text(
-      `Generado el ${new Date().toLocaleString()}`,
-      pageWidth - 14,
-      pageHeight - 20,
-      { align: "right" }
-    );
-
-    doc.save(`proforma ${selectedUser?.nombre} ${selectedUser?.apellido}_${selectedVenta?.fecha}.pdf`);
-  };
+    doc.text("GRACIAS POR SU COMPRA.", pageWidth / 2, yPos, { align: "center" });
+    
+    // Pie de página
+    doc.text("Esta factura es válida por 7 días.", margin,  - 15);
+    doc.text(`Generado el ${now.toLocaleString()}`, pageWidth - margin,  - 15, { align: "right" });
+    
+    // Guardar PDF
+    doc.save(`factura_${selectedUser?.nombre}_${selectedUser?.ci}_${now.toISOString().split('T')[0]}.pdf`);
+  } catch (error) {
+    console.error("Error al generar la factura:", error);
+  }
+};
 
   const filteredVentas = ventas.filter((venta) => {
     const cliente = usuario.find((user) => user.id === venta.idcliente);
     const clienteNombre = cliente
-      ? `${cliente.nombre} ${cliente.apellido}`.toLowerCase()
+      ? `${cliente.nombre} ${cliente.ci}`.toLowerCase()
       : "";
     return (
       clienteNombre.includes(search.toLowerCase()) ||
@@ -256,7 +254,7 @@ function HistorialVentasCliente() {
     if (window.confirm("¿Está seguro de eliminar esta venta?")) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/Ventas/${id}`,
+          `https://farmaciamontecino.onrender.com/api/Ventas/${id}`,
           {
             method: "DELETE",
           }
@@ -294,6 +292,7 @@ function HistorialVentasCliente() {
           <thead className="bg-blue text-white uppercase text-sm">
             <tr>
               <th className="px-6 py-3 text-left bg-blue">Cliente</th>
+              <th className="px-6 py-3 text-left bg-blue">CI/NIT</th>
               <th className="px-6 py-3 text-left bg-blue">Fecha</th>
               <th className="px-6 py-3 text-left bg-blue">Total</th>
               <th className="px-6 py-3 text-left bg-blue">Acciones</th>
@@ -309,7 +308,12 @@ function HistorialVentasCliente() {
                   
                   <td className="p-3">
                     {cliente
-                      ? `${cliente.nombre} ${cliente.apellido}`
+                      ? `${cliente.nombre} ${cliente.ci}`
+                      : "Desconocido"}
+                  </td>
+                    <td className="p-3">
+                    {cliente
+                      ? `${cliente.ci}`
                       : "Desconocido"}
                   </td>
                   <td className="p-3">{venta.fecha}</td>
@@ -376,14 +380,14 @@ function HistorialVentasCliente() {
                   </p>
                 </div>
                 <div>
-                  <span className="text-sm text-gray-500">Apellido:</span>
+                  <span className="text-sm text-gray-500">CI/NIT:</span>
                   <p className="font-medium">
                     {usuario.find(
                       (u) =>
                         u.id ===
                         ventas.find((v) => v.id === selectedVentaId)
                           ?.idcliente
-                    )?.apellido || "Desconocido"}
+                    )?.ci || "Desconocido"}
                   </p>
                 </div>
                 <div>

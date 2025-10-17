@@ -53,7 +53,7 @@ function Tipos() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/Tipos/ListarTiposActivos")
+    fetch("https://farmaciamontecino.onrender.com/api/Tipos/ListarTiposActivos")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al obtener los tipos");
@@ -73,7 +73,7 @@ function Tipos() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/Tipos/Crear?nombre=${encodeURIComponent(newName)}`,
+        `https://farmaciamontecino.onrender.com/api/Tipos/Crear?nombre=${encodeURIComponent(newName)}`,
         {
           method: "POST",
           headers: {
@@ -110,7 +110,7 @@ function Tipos() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/Tipos/Actualizar?id=${editTipoId}&nombre=${encodeURIComponent(newName)}`,
+        `https://farmaciamontecino.onrender.com/api/Tipos/Actualizar?id=${editTipoId}&nombre=${encodeURIComponent(newName)}`,
         {
           method: "PUT",
           headers: {
@@ -140,7 +140,7 @@ function Tipos() {
   const handleEliminar = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/Tipos/${id}`,
+        `https://farmaciamontecino.onrender.com/api/Tipos/${id}`,
         {
           method: "DELETE",
         }
@@ -185,7 +185,7 @@ function Tipos() {
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-primary">
-              Gestión de Tipos de Unidades
+              Gestión de Tipos de Medicamento
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -255,7 +255,6 @@ function Tipos() {
                     setCurrentPage(1);
                   }}
                 />
-                <Search className="absolute left-2 top-3 h-4 w-4 text-gray-400" />
               </div>
             </div>
   

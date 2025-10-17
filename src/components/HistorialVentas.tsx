@@ -38,7 +38,7 @@ interface Detalle_Ventas {
 interface Client {
   id: number;
   nombre: string;
-  apellido: string;
+  ci: string;
   telefono: string;
   direccion: string;
   eliminado?: boolean;
@@ -72,18 +72,18 @@ function HistorialVentas() {
     const fetchData = async () => {
       try {
         const responseClientes = await fetch(
-          "http://localhost:5000/api/Clientes/ListarClientesActivos"
+          "https://farmaciamontecino.onrender.com/api/Clientes/ListarClientesActivos"
         );
         const dataClientes = await responseClientes.json();
         setUsuario(dataClientes);
 
         const responseProducto = await fetch(
-          "http://localhost:5000/api/Productos/ListarProductosActivos");
+          "https://farmaciamontecino.onrender.com/api/Productos/ListarProductosActivos");
         const dataProductos = await responseProducto.json();
         setProducto(dataProductos);
 
         const responseVentas = await fetch(
-          "http://localhost:5000/api/Ventas/ListarVentasActivos"
+          "https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasActivos"
         );
         const dataVentas = await responseVentas.json();
         setVentas(dataVentas);
@@ -98,7 +98,7 @@ function HistorialVentas() {
   const handlePdfClick = async (idventa: number) => {
     try {
       const responseDetalleVenta = await fetch(
-        `http://localhost:5000/api/Ventas/listarVentaDetalleVenta?idventa=${idventa}`
+        `https://farmaciamontecino.onrender.com/api/Ventas/listarVentaDetalleVenta?idventa=${idventa}`
       );
       const dataDetalleVenta = await responseDetalleVenta.json();
       setDetalleVenta(dataDetalleVenta);
@@ -147,7 +147,7 @@ function HistorialVentas() {
     doc.text("INFORMACIÓN DEL CLIENTE", 14, 62);
 
     doc.setFont("helvetica", "normal");
-    doc.text(`Cliente: ${selectedUser?.nombre} ${selectedUser?.apellido}`, 14, 70);
+    doc.text(`Cliente: ${selectedUser?.nombre} CI/NIT: ${selectedUser?.ci}`, 14, 70);
     doc.text(`Teléfono: ${selectedUser?.telefono}`, 14, 76);
     doc.text(`Fecha: ${new Date(selectedVenta?.fecha || '').toLocaleDateString()}`, pageWidth - 60, 70);
     doc.text(`No. Proforma: ${Math.floor(Math.random() * 10000)}`, pageWidth - 60, 76);
@@ -221,7 +221,7 @@ function HistorialVentas() {
   const filteredVentas = ventas.filter((venta) => {
     const cliente = usuario.find((user) => user.id === venta.idcliente);
     const clienteNombre = cliente
-      ? `${cliente.nombre} ${cliente.apellido}`.toLowerCase()
+      ? `${cliente.nombre} ${cliente.ci}`.toLowerCase()
       : "";
     return (
       clienteNombre.includes(search.toLowerCase()) ||
@@ -236,7 +236,7 @@ function HistorialVentas() {
   const handleDelete = async (id: number) => {
     if (window.confirm('¿Está seguro de eliminar esta venta?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/Ventas/${id}`, {
+        const response = await fetch(`https://farmaciamontecino.onrender.com/api/Ventas/${id}`, {
           method: 'DELETE'
         });
   
@@ -305,7 +305,8 @@ function HistorialVentas() {
                   return (
                     <tr key={venta.id} className="border-b hover:bg-gray-50">
                      
-                      <td className="p-3">{cliente ? `${cliente.nombre} ${cliente.apellido}` : "Desconocido"}</td>
+                      <td className="p-3">{cliente ? `${cliente.nombre}` : "Desconocido"}</td>
+                       <td className="p-3">{cliente ? `${cliente.ci}` : "Desconocido"}</td>
                       <td className="p-3">{venta.total}</td>
                       <td className="p-3">{venta.fecha}</td>
                       <td className="p-3 text-center">
@@ -364,9 +365,9 @@ function HistorialVentas() {
                     </p>
                   </div>
                   <div>
-                    <span className="text-sm text-gray-500">Apellido:</span>
+                    <span className="text-sm text-gray-500">CI/NIT:</span>
                     <p className="font-medium">
-                      {usuario.find((u) => u.id === ventas.find((v) => v.id === selectedVentaId)?.idcliente)?.apellido || "Desconocido"}
+                      {usuario.find((u) => u.id === ventas.find((v) => v.id === selectedVentaId)?.idcliente)?.ci || "Desconocido"}
                     </p>
                   </div>
                   <div>

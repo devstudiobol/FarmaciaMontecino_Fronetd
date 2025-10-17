@@ -34,7 +34,13 @@ interface Producto {
   nombre: string;
   stock: number; // Stock actual del producto
 }
-
+interface Configuracion {
+  id: string;
+  nombre: string;
+  telefono: string;
+  email: string;
+  direccion: string;
+}
 function HistorialVentasProducto() {
   const [ventas, setVentas] = useState<Venta[]>([]);
   const [fechaIni, setFechaIni] = useState<string>("");
@@ -42,23 +48,28 @@ function HistorialVentasProducto() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVenta, setSelectedVenta] = useState<Venta | null>(null);
+  const [configuracion,setConfiguracion]=useState<Configuracion[]>([]);
 
   const calcularTotalGeneral = () => {
     return getProductosVendidos().reduce((total, producto) => total + producto.total, 0);
   };
-
+useEffect(() => {
+  fetch('https://farmaciamontecino.onrender.com/api/Configuracions/ListarConfiguracionActivos')
+    .then(response => response.json())
+    .then(data => setConfiguracion(data))
+}, []) ;
   useEffect(() => {
     const fetchData = async () => {
       try {
         const responseProductos = await fetch(
-          "http://localhost:5000/api/Productos/ListarProductosActivos"
+          "https://farmaciamontecino.onrender.com/api/Productos/ListarProductosActivos"
         );
         const dataProductos = await responseProductos.json();
         setProductos(dataProductos);
 
-        let url = "http://localhost:5000/api/Ventas/ListarVentasActivos";
+        let url = "https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasActivos";
         if (fechaIni && fechaFin) {
-          url = `http://localhost:5000/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
+          url = `https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
         }
 
         const responseVentas = await fetch(url);
@@ -121,14 +132,16 @@ function HistorialVentasProducto() {
     doc.setFont("helvetica", "bold");
     doc.text("REPORTE DE VENTAS", pageWidth / 2, 20, { align: "center" });
 
-    // Información de la empresa (encabezado)
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(52, 73, 94);
-    doc.text("EMPRESA: FARMACIA MEDICITY S.A.", 14, 35);
-    doc.setFontSize(10);
-    doc.text("Dirección: Av. Principal #452", 14, 42);
-    doc.text("Tel: (951) 456-7890", 14, 48);
+        doc.setFontSize(12);
+    doc.setFont(undefined, "bold");
+      {configuracion.map((item) => (
+    doc.text(`${item.nombre}`, 14, 35),
+    doc.setFontSize(8),
+    doc.setFont(undefined, "normal"),
+    doc.text(`Direccion: ${item.direccion}`, 14, 42),
+    doc.text(`Cel: ${item.telefono}` ,14, 48 )
+  ))};
+ 
 
     // Línea divisoria
     doc.setDrawColor(41, 128, 185);

@@ -46,7 +46,7 @@ const PharmacyUnits: React.FC = () => {
   useEffect(() => {
     const fetchUnits = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/Presentaciones/ListarPresentacionesActivos');
+        const response = await fetch('https://farmaciamontecino.onrender.com/api/Presentaciones/ListarPresentacionesActivos');
         if (!response.ok) {
           throw new Error('Error al obtener las unidades');
         }
@@ -86,7 +86,7 @@ const PharmacyUnits: React.FC = () => {
       if (editMode) {
         // Update existing unit
         const response = await fetch(
-          `http://localhost:5000/api/Presentaciones/Actualizar?id=${formData.id}&nombre=${formData.nombre}&nombreCorto=${formData.nombreCorto}`,
+          `https://farmaciamontecino.onrender.com/api/Presentaciones/Actualizar?id=${formData.id}&nombre=${formData.nombre}&nombreCorto=${formData.nombreCorto}`,
           {
             method: "PUT",
             headers: {
@@ -107,7 +107,7 @@ const PharmacyUnits: React.FC = () => {
       } else {
         // Create new unit
         const response = await fetch(
-          `http://localhost:5000/api/Presentaciones/Crear?nombre=${formData.nombre}&nombreCorto=${formData.nombreCorto}`,
+          `https://farmaciamontecino.onrender.com/api/Presentaciones/Crear?nombre=${formData.nombre}&nombreCorto=${formData.nombreCorto}`,
           {
             method: "POST",
             headers: {
@@ -140,7 +140,7 @@ const PharmacyUnits: React.FC = () => {
   const handleDelete = async (id: number) => {
     if (window.confirm('¿Está seguro de eliminar esta unidad?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/api/Presentaciones/${id}`, {
+        const response = await fetch(`https://farmaciamontecino.onrender.com/api/api/Presentaciones/${id}`, {
           method: "DELETE",
         });
 
@@ -193,7 +193,7 @@ const PharmacyUnits: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-primary">
-              Gestión de Unidades
+              Gestión de Presentaciones de Medicamentos
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -264,7 +264,7 @@ const PharmacyUnits: React.FC = () => {
               <div className="search-container flex">
                 <input
                   type="text"
-                  className="search-input border rounded-l p-2"
+                  className=""
                   placeholder="Buscar..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}

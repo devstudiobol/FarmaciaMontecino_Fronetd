@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Trash2, Edit2 } from "lucide-react";
+import { Trash2, Edit2, Search } from "lucide-react";
 import NavBarRoot from "./NavBarRoot";
 import {
   Card,
@@ -25,6 +25,7 @@ interface Product {
   idlaboratorio: number;
   idtipo: number;
   eliminado?: boolean;
+  precio_compra:number
 }
 
 interface Tipo {
@@ -64,7 +65,8 @@ const initialProductState: Partial<Product> = {
   vencimiento: '',
   idpresentacion: 0,
   idlaboratorio: 0,
-  idtipo: 0
+  idtipo: 0,
+  precio_compra: 0,
 };
 
 // Componente principal
@@ -89,10 +91,10 @@ const ProductManagement: React.FC = () => {
     const fetchData = async () => {
       try {
         const [productsRes, tiposRes, laboratoriosRes, presentacionRes] = await Promise.all([
-          fetch("http://localhost:5000/api/Productos/ListarProductosActivos"),
-          fetch("http://localhost:5000/api/Tipos/ListarTiposActivos"),
-          fetch("http://localhost:5000/api/Laboratorios/ListarLaboratoriosActivos"),
-          fetch("http://localhost:5000/api/Presentaciones/ListarPresentacionesActivos")
+          fetch("https://farmaciamontecino.onrender.com/api/Productos/listarProductosConMenorStock"),
+          fetch("https://farmaciamontecino.onrender.com/api/Tipos/ListarTiposActivos"),
+          fetch("https://farmaciamontecino.onrender.com/api/Laboratorios/ListarLaboratoriosActivos"),
+          fetch("https://farmaciamontecino.onrender.com/api/Presentaciones/ListarPresentacionesActivos")
         ]);
 
         const [dataProductos, dataTipos, dataLaboratorios, dataPresentacion] = await Promise.all([
@@ -135,7 +137,7 @@ const ProductManagement: React.FC = () => {
   // Manejar eliminación de producto
   const handleEliminar = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/api/Productos/${id}`, {
+      const response = await fetch(`https://farmaciamontecino.onrender.com/api/Productos/${id}`, {
         method: 'DELETE',
       });
 
@@ -157,14 +159,14 @@ const ProductManagement: React.FC = () => {
     // Validación de campos requeridos
     if (!formData.codigo || !formData.nombre || !formData.descripcion || !formData.precio || 
         !formData.stock || !formData.vencimiento || !formData.idtipo || 
-        !formData.idlaboratorio || !formData.idpresentacion) {
+        !formData.idlaboratorio || !formData.idpresentacion|| !formData.precio_compra) {
       showAlert("error", "Por favor complete todos los campos requeridos");
       return;
     }
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/Productos/Crear?codigo=${formData.codigo}&nombre=${formData.nombre}&descripcion=${formData.descripcion}&precio=${formData.precio}&stock=${formData.stock}&vencimiento=${formData.vencimiento}&idtipo=${formData.idtipo}&idlaboratorio=${formData.idlaboratorio}&concentracion=${formData.concentracion}&casilla=${formData.casilla}&idpresentacion=${formData.idpresentacion}`,
+        `https://farmaciamontecino.onrender.com/api/Productos/Crear?codigo=${formData.codigo}&nombre=${formData.nombre}&descripcion=${formData.descripcion}&precio=${formData.precio}&stock=${formData.stock}&vencimiento=${formData.vencimiento}&idtipo=${formData.idtipo}&idlaboratorio=${formData.idlaboratorio}&concentracion=${formData.concentracion}&casilla=${formData.casilla}&idpresentacion=${formData.idpresentacion}&precio_compra=${formData.precio_compra}`,
         {
           method: "POST",
           headers: {
@@ -211,8 +213,9 @@ const ProductManagement: React.FC = () => {
       params.append('idpresentacion', formData.idpresentacion?.toString() || '0');
       params.append('idlaboratorio', formData.idlaboratorio?.toString() || '0');
       params.append('idtipo', formData.idtipo?.toString() || '0');
+       params.append('precio_compra', formData.precio_compra?.toString() || '0');
 
-      const url = `http://localhost:5000/api/Productos/Actualizar?${params.toString()}`;
+      const url = `https://farmaciamontecino.onrender.com/api/Productos/Actualizar?${params.toString()}`;
       
       const response = await fetch(url, {
         method: "PUT",
@@ -250,15 +253,14 @@ const ProductManagement: React.FC = () => {
     setTimeout(() => setAlert({ show: false, type: "success", message: "" }), 5000);
   };
 
-  // Lógica de paginación y búsqueda
-  const filteredProductos = products.filter(
-    (pr) =>
-      !pr.eliminado &&
-      (pr.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       pr.codigo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       pr.nombre.toLowerCase().includes(searchTerm.toLowerCase()))
+  // Lógica de búsqueda y filtrado
+  const filteredProductos = products.filter(product => 
+    !product.eliminado &&
+    (product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     product.codigo.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  // Lógica de paginación
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredProductos.length);
   const currentProducts = filteredProductos.slice(startIndex, endIndex);
@@ -286,7 +288,7 @@ const ProductManagement: React.FC = () => {
               </Alert>
             )}
 
-            <form onSubmit={editProducto ? handleActualizar : handleAgregar} className="product-form">
+        <form onSubmit={editProducto ? handleActualizar : handleAgregar} className="product-form">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* Código de Barras */}
                 <div className="form-group space-y-2">
@@ -429,6 +431,21 @@ const ProductManagement: React.FC = () => {
                     required
                   />
                 </div>
+                     {/* Precio */}
+                <div className="form-group space-y-2">
+                  <label className="block text-sm font-medium text-black text-center">
+                    Precio Compra
+                  </label>
+                  <input
+                    type="Text"
+                    name="precio_compra"
+                    value={formData.precio_compra || 0}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    placeholder="Ingrese precio"
+                    required
+                  />
+                </div>
 
                 {/* Stock */}
                 <div className="form-group space-y-2">
@@ -500,6 +517,29 @@ const ProductManagement: React.FC = () => {
 
             {/* Tabla de Productos */}
             <div className="overflow-x-auto mt-8">
+              <div className="search-container flex mb-4">
+                <input
+                  type="text"
+                  className=""
+                  placeholder="Buscar por nombre o código..."
+                  value={searchTerm}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    setCurrentPage(1); // Resetear a la primera página al buscar
+                  }}
+                />
+                <button
+                  style={{ background: 'blue' }}
+                  className="search-button text-white px-4 rounded-r hover:bg-blue-600 transition"
+                  onClick={() => {
+                    setSearchTerm("");
+                    setCurrentPage(1);
+                  }}
+                >
+                  <Search size={18} />
+                </button>
+              </div>
+              
               <table className="w-full border-collapse table-auto">
                 <thead className="bg-gray-800 text-white">
                   <tr>
@@ -509,6 +549,7 @@ const ProductManagement: React.FC = () => {
                     <th style={{background:'blue'}} className="px-4 py-2 text-left">Tipo</th>
                     <th style={{background:'blue'}} className="px-4 py-2 text-left">Presentación</th>
                     <th style={{background:'blue'}} className="px-4 py-2 text-left">Laboratorio</th>
+                    <th style={{background:'blue'}} className="px-4 py-2 text-left">Precio Compra</th>
                     <th style={{background:'blue'}} className="px-4 py-2 text-left">Precio</th>
                     <th style={{background:'blue'}} className="px-4 py-2 text-left">Stock</th>
                     <th style={{background:'blue'}} className="px-4 py-2 text-left">Casilla</th>
@@ -519,7 +560,9 @@ const ProductManagement: React.FC = () => {
                 <tbody>
                   {filteredProductos.length === 0 ? (
                     <tr>
-                      <td colSpan={11} className="text-center py-4">No hay productos registrados</td>
+                      <td colSpan={11} className="text-center py-4">
+                        {searchTerm ? "No se encontraron productos que coincidan con la búsqueda" : "No hay productos registrados"}
+                      </td>
                     </tr>
                   ) : (
                     currentProducts.map((product) => {
@@ -528,27 +571,28 @@ const ProductManagement: React.FC = () => {
                       const presentacionNombre = presentacion.find((pre) => pre.id === product.idpresentacion)?.nombreCorto || "Desconocido";
 
                       return (
-                        <tr key={product.id}>
-                          <td className="px-4 py-2">{product.codigo}</td>
-                          <td className="px-4 py-2">{product.nombre}</td>
-                          <td className="px-4 py-2">{product.descripcion}</td>
-                          <td className="px-4 py-2">{tipoNombre}</td>
-                          <td className="px-4 py-2">{product.concentracion && `${product.concentracion} ${presentacionNombre}`}</td>
-                          <td className="px-4 py-2">{laboratorioNombre}</td>
-                          <td className="px-4 py-2">{product.precio.toFixed(2)}Bs</td>
-                          <td className="px-4 py-2">{product.stock}</td>
-                          <td className="px-4 py-2">{product.casilla}</td>
-                          <td className="px-4 py-2">{product.vencimiento}</td>
-                          <td className="px-4 py-2 flex gap-2">
+                        <tr key={product.id} className="hover:bg-gray-50">
+                          <td className="px-4 py-2 border">{product.codigo}</td>
+                          <td className="px-4 py-2 border">{product.nombre}</td>
+                          <td className="px-4 py-2 border">{product.descripcion}</td>
+                          <td className="px-4 py-2 border">{tipoNombre}</td>
+                          <td className="px-4 py-2 border">{product.concentracion && `${product.concentracion} ${presentacionNombre}`}</td>
+                          <td className="px-4 py-2 border">{laboratorioNombre}</td>
+                           <td className="px-4 py-2 border">{product.precio_compra.toFixed(2)}Bs</td>
+                          <td className="px-4 py-2 border">{product.precio.toFixed(2)}Bs</td>
+                          <td className="px-4 py-2 border">{product.stock}</td>
+                          <td className="px-4 py-2 border">{product.casilla}</td>
+                          <td className="px-4 py-2 border">{product.vencimiento}</td>
+                          <td className="px-4 py-2 border flex gap-2">
                             <button 
                               style={{background:'blue'}}  
-                              className="btn btn-warning" 
+                              className="btn btn-warning p-1 rounded text-white" 
                               onClick={() => handleEdit(product)}
                             >
                               <Edit2 size={18} />
                             </button>
                             <button 
-                              className="btn btn-danger" 
+                              className="btn btn-danger p-1 rounded text-white bg-red-500" 
                               onClick={() => handleEliminar(product.id)}
                             >
                               <Trash2 size={18}/>
@@ -563,27 +607,36 @@ const ProductManagement: React.FC = () => {
             </div>
 
             {/* Paginación */}
-            <div className="flex justify-between items-center mt-4">
-              <div className="text-sm text-gray-600">
-                Mostrando registros del {startIndex + 1} al {Math.min(endIndex, filteredProductos.length)} 
-                de un total de {filteredProductos.length} registros
+            {filteredProductos.length > 0 && (
+              <div className="flex justify-between items-center mt-4">
+                <div className="text-sm text-gray-600">
+                  Mostrando registros del {startIndex + 1} al {Math.min(endIndex, filteredProductos.length)} 
+                  de un total de {filteredProductos.length} registros
+                </div>
+                <div className="pagination-buttons flex gap-2">
+                  <button 
+                    className="px-3 py-1 border rounded disabled:opacity-50"
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+                    disabled={currentPage === 1}
+                  >
+                    Anterior
+                  </button>
+                  <button 
+                    style={{background:'blue'}} 
+                    className="px-3 py-1 rounded text-white"
+                  >
+                    {currentPage}
+                  </button>
+                  <button 
+                    className="px-3 py-1 border rounded disabled:opacity-50"
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
+                    disabled={currentPage === totalPages}
+                  >
+                    Siguiente
+                  </button>
+                </div>
               </div>
-              <div className="pagination-buttons">
-                <button 
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
-                  disabled={currentPage === 1}
-                >
-                  Anterior
-                </button>
-                <button style={{background:'blue'}} className="active">{currentPage}</button>
-                <button 
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
-                  disabled={currentPage === totalPages}
-                >
-                  Siguiente
-                </button>
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </div>

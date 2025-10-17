@@ -14,7 +14,7 @@ import "./ClientManagement.css";
 interface Client {
   id: number;
   nombre: string;
-  apellido: string;
+  ci: string;
   telefono: string;
   direccion: string;
   eliminado?: boolean;
@@ -30,14 +30,14 @@ interface AlertState {
 const ClientManagement: React.FC = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [newNombre, setNewNombre] = useState("");
-  const [newApellido, setNewApellido] = useState("");
+  const [newCI, setNewCI] = useState("");
   const [newTelefono, setNewTelefono] = useState("");
   const [newDireccion, setNewDirreccion] = useState("");
   const [editClient, setEditClient] = useState<number | null>(null);
   const [formData, setFormData] = useState<Client>({
     id: 0,
     nombre: "",
-    apellido: "",
+    ci: "",
     telefono: "",
 
     direccion: "",
@@ -56,7 +56,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
 
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/Clientes/ListarClientesActivos")
+    fetch("https://farmaciamontecino.onrender.com/api/Clientes/ListarClientesActivos")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al obtener los clientes");
@@ -83,14 +83,14 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
   const handleAgregar = async (e: React.FormEvent) => {
     e.preventDefault(); // Agregamos esto para prevenir el comportamiento por defecto del formulario
     
-    if (!newNombre.trim() || !newApellido.trim() || !newTelefono.trim() || !newDireccion.trim()) {
+    if (!newNombre.trim() || !newCI.trim() || !newTelefono.trim() || !newDireccion.trim()) {
       showAlert("error", "Todos los campos son obligatorios");
       return;
     }
   
     try {
       const response = await fetch(
-        `tps://farmacia20250407113355.azurewebsites.net/api/Clientes/Crear?nombre=${newNombre}&apellido=${newApellido}&telefono=${newTelefono}&direccion=${newDireccion}`,
+        `https://farmaciamontecino.onrender.com/api/Clientes/Crear?nombre=${newNombre}&ci=${newCI}&telefono=${newTelefono}&direccion=${newDireccion}`,
         {
           method: "POST",
           headers: {
@@ -116,12 +116,12 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
     setFormData({
       id: 0,
       nombre: "",
-      apellido: "",
+      ci: "",
       telefono: "",
       direccion: "",
     });
     setNewNombre("");
-    setNewApellido("");
+    setNewCI("");
     setNewTelefono("");
     setNewDirreccion("");
     setEditMode(false);
@@ -139,7 +139,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
     if (window.confirm('¿Está seguro de eliminar este cliente?')) {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/Clientes/${id}`,
+          `https://farmaciamontecino.onrender.com/api/Clientes/${id}`,
           {
             method: "DELETE",
           }
@@ -160,7 +160,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
   const handleEdit = (client: Client) => {
     setEditClient(client.id); // Guardar el ID del cliente que se está editando
     setNewNombre(client.nombre); // Cargar el nombre actual en el campo de edición
-    setNewApellido(client.apellido);
+    setNewCI(client.ci);
     setNewTelefono(client.telefono);
     setNewDirreccion(client.direccion);
     setEditMode(true); // Activar el modo de edición
@@ -175,7 +175,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
   const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!newNombre.trim() || !newApellido.trim() || !newTelefono.trim() || !newDireccion.trim()) {
+    if (!newNombre.trim() || !newCI.trim() || !newTelefono.trim() || !newDireccion.trim()) {
       showAlert("error", "Todos los campos son obligatorios");
       return;
     }
@@ -184,7 +184,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
   
     try {
       const response = await fetch(
-        `http://localhost:5000/api/Clientes/Actualizar?id=${editClient}&nombre=${newNombre}&apellido=${newApellido}&telefono=${newTelefono}&direccion=${newDireccion}`,
+        `https://farmaciamontecino.onrender.com/api/Clientes/Actualizar?id=${editClient}&nombre=${newNombre}&ci=${newCI}&telefono=${newTelefono}&direccion=${newDireccion}`,
         {
           method: "PUT",
           headers: {
@@ -200,7 +200,7 @@ const [itemsPerPage, setItemsPerPage] = useState(10);
               ? {
                   ...client,
                   nombre: newNombre,
-                  apellido: newApellido,
+                  ci: newCI,
                   telefono: newTelefono,
                   direccion: newDireccion,
                 }
@@ -265,13 +265,13 @@ const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
       />
     </div>
     <div>
-      <label className="block text-sm font-medium mb-1">Apellido</label>
+      <label className="block text-sm font-medium mb-1">CI/NIT</label>
       <input
         type="text"
-        name="apellido"
-        value={newApellido}
-        onChange={(e) => setNewApellido(e.target.value)}
-        placeholder="Ingrese Apellido"
+        name="ci"
+        value={newCI}
+        onChange={(e) => setNewCI(e.target.value)}
+        placeholder="Ingrese CI/NIT"
       />
     </div>
     <div>
@@ -328,7 +328,7 @@ const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
                 <div className="search-container">
                     <input
                       type="text"
-                      className="search-input"
+                      className=""
                       placeholder="Buscar..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
@@ -349,6 +349,7 @@ const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
                     <tr>
                  
                     <th style={{background:'blue'}}  className="p-3 text-left">Nombre</th>
+                    <th style={{background:'blue'}}  className="p-3 text-left">CI/NIT</th>
                     <th style={{background:'blue'}}  className="p-3 text-left">Teléfono</th>
                     <th style={{background:'blue'}}  className="p-3 text-left">Dirección</th>
                     <th style={{background:'blue'}}  className="p-3 text-center">Acciones</th>
@@ -359,6 +360,7 @@ const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
                       <tr key={client.id} className="border-b hover:bg-gray-50">
                      
                         <td className="p-3">{client.nombre}</td>
+                        <td className="p-3">{client.ci}</td>
                         <td className="p-3">{client.telefono}</td>
                         <td className="p-3">{client.direccion}</td>
                         <td className="p-3 text-center">

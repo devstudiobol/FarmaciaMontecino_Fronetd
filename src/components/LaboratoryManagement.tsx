@@ -59,7 +59,7 @@ const LaboratoryManagement: React.FC = () => {
 
   const fetchLaboratories = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/Laboratorios/ListarLaboratoriosActivos");
+      const response = await fetch("https://farmaciamontecino.onrender.com/api/Laboratorios/ListarLaboratoriosActivos");
       if (!response.ok) {
         throw new Error("Error al obtener los laboratorios");
       }
@@ -94,7 +94,7 @@ const LaboratoryManagement: React.FC = () => {
     
     try {
       const response = await fetch(
-        `http://localhost:5000/api/Laboratorios/Crear?laboratorionombre=${encodeURIComponent(newName)}&direccion=${encodeURIComponent(newDireccion)}`,
+        `https://farmaciamontecino.onrender.com/api/Laboratorios/Crear?laboratorionombre=${encodeURIComponent(newName)}&direccion=${encodeURIComponent(newDireccion)}`,
         {
           method: "POST",
         }
@@ -131,7 +131,7 @@ const LaboratoryManagement: React.FC = () => {
     
     try {
       const response = await fetch(
-        `http://localhost:5000/api/Laboratorios/Actualizar?id=${editLabId}&laboratorionombre=${encodeURIComponent(newName)}&direccion=${encodeURIComponent(newDireccion)}`,
+        `https://farmaciamontecino.onrender.com/api/Laboratorios/Actualizar?id=${editLabId}&laboratorionombre=${encodeURIComponent(newName)}&direccion=${encodeURIComponent(newDireccion)}`,
         {
           method: "PUT",
         }
@@ -159,7 +159,7 @@ const LaboratoryManagement: React.FC = () => {
 
   const handleEliminar = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/Laboratorios/${id}`, {
+      const response = await fetch(`https://farmaciamontecino.onrender.com/api/Laboratorios/${id}`, {
         method: 'DELETE',
       });
 
@@ -269,7 +269,7 @@ const LaboratoryManagement: React.FC = () => {
                 <div className="search-container">
                   <input
                     type="text"
-                    className="search-input"
+                    className=""
                     placeholder="Buscar..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}

@@ -27,7 +27,7 @@ function NavBarRoot() {
 
   const fetchUserPermissions = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/Detalle_Permisos/ListarDetallePermisosActivosUsuario?id=${userId}`);
+      const response = await fetch(`https://farmaciamontecino.onrender.com/api/Detalle_Permisos/ListarDetallePermisosActivosUsuario?id=${userId}`);
       if (!response.ok) {
         throw new Error('Error al obtener los permisos');
       }
@@ -54,7 +54,7 @@ function NavBarRoot() {
       {/* Navbar en columna */}
       <nav className="bg-blue text-white h-screen w-56 flex flex-col items-center py-5">
         <div className="mb-5">
-          <a href="/home"> <img src={icono} alt="Icon" className="w-52 h-34" />
+          <a href="/home"> <img src={icono} alt="Icon" className="w-32 h-20" />
           </a>
         </div>
         <ul className="flex flex-col gap-6">
