@@ -203,25 +203,25 @@ function Ventas() {
     const fetchData = async () => {
       try {
         const responseProductos = await fetch(
-          "https://farmaciamontecino.onrender.com/api/Productos/ListarProductosActivos"
+          "https://farmaciamontecinoweb.onrender.com/api/Productos/ListarProductosActivos"
         );
         const dataProductos = await responseProductos.json();
         setProducto(dataProductos);
 
         const responseVentas = await fetch(
-          "https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasActivos"
+          "https://farmaciamontecinoweb.onrender.com/api/Ventas/ListarVentasActivos"
         );
         const dataVentas = await responseVentas.json();
         setVenta(dataVentas);
 
         const responseUsuario = await fetch(
-          "https://farmaciamontecino.onrender.com/api/Clientes/ListarClientesActivos"
+          "https://farmaciamontecinoweb.onrender.com/api/Clientes/ListarClientesActivos"
         );
         const dataUsuarios = await responseUsuario.json();
         setUsuarios(dataUsuarios);
 
         const responseDVenta = await fetch(
-          "https://farmaciamontecino.onrender.com/api/Detalle_Ventas/ListarDetalleVentasActivos"
+          "https://farmaciamontecinoweb.onrender.com/api/Detalle_Ventas/ListarDetalleVentasActivos"
         );
         const dataDventa = await responseDVenta.json();
         setDVenta(dataDventa);
@@ -230,19 +230,19 @@ function Ventas() {
       }
 
       const responseTipos = await fetch(
-        "https://farmaciamontecino.onrender.com/api/Tipos/ListarTiposActivos"
+        "https://farmaciamontecinoweb.onrender.com/api/Tipos/ListarTiposActivos"
       );
       const dataTipos = await responseTipos.json();
       setTipos(dataTipos);
 
       const responseLaboratorios = await fetch(
-        "https://farmaciamontecino.onrender.com/api/Laboratorios/ListarLaboratoriosActivos"
+        "https://farmaciamontecinoweb.onrender.com/api/Laboratorios/ListarLaboratoriosActivos"
       );
       const dataLaboratorios = await responseLaboratorios.json();
       setLaboratorio(dataLaboratorios);
 
       const responsePresentacion = await fetch(
-        "https://farmaciamontecino.onrender.com/api/Presentaciones/ListarPresentacionesActivos"
+        "https://farmaciamontecinoweb.onrender.com/api/Presentaciones/ListarPresentacionesActivos"
       );
       const dataPresentacion = await responsePresentacion.json();
       setPresentacion(dataPresentacion);
@@ -252,7 +252,7 @@ function Ventas() {
   }, []);
 
   useEffect(() => {
-    fetch('https://farmaciamontecino.onrender.com/api/Configuracions/ListarConfiguracionActivos')
+    fetch('https://farmaciamontecinoweb.onrender.com/api/Configuracions/ListarConfiguracionActivos')
       .then(response => response.json())
       .then(data => setConfiguracion(data))
   }, []);
@@ -334,7 +334,7 @@ function Ventas() {
 
     try {
       const responseVenta = await fetch(
-        `https://farmaciamontecino.onrender.com/api/Ventas/Crear?${queryParams}`,
+        `https://farmaciamontecinoweb.onrender.com/api/Ventas/Crear?${queryParams}`,
         {
           method: "POST",
         }
@@ -361,7 +361,7 @@ function Ventas() {
         }).toString();
 
         const responseDetalle = await fetch(
-          `https://farmaciamontecino.onrender.com/api/Detalle_Ventas/Crear?${queryParamsDetalle}`,
+          `https://farmaciamontecinoweb.onrender.com/api/Detalle_Ventas/Crear?${queryParamsDetalle}`,
           {
             method: "POST",
           }

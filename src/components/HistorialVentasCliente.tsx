@@ -87,7 +87,7 @@ function HistorialVentasCliente() {
   const [fechaFin, setFechaFin] = useState<string>("");
   const [configuracion, setConfiguracion] = useState<Configuracion[]>([]);
     useEffect(() => {
-    fetch('https://farmaciamontecino.onrender.com/api/Configuracions/ListarConfiguracionActivos')
+    fetch('https://farmaciamontecinoweb.onrender.com/api/Configuracions/ListarConfiguracionActivos')
       .then(response => response.json())
       .then(data => setConfiguracion(data))
   }, []);
@@ -96,20 +96,20 @@ function HistorialVentasCliente() {
     const fetchData = async () => {
       try {
         const responseClientes = await fetch(
-          "https://farmaciamontecino.onrender.com/api/Clientes/ListarClientesActivos"
+          "https://farmaciamontecinoweb.onrender.com/api/Clientes/ListarClientesActivos"
         );
         const dataClientes = await responseClientes.json();
         setUsuario(dataClientes);
 
         const responseProducto = await fetch(
-          "https://farmaciamontecino.onrender.com/api/Productos/ListarProductosActivos"
+          "https://farmaciamontecinoweb.onrender.com/api/Productos/ListarProductosActivos"
         );
         const dataProductos = await responseProducto.json();
         setProducto(dataProductos);
 
-        let url = "https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasActivos";
+        let url = "https://farmaciamontecinoweb.onrender.com/api/Ventas/ListarVentasActivos";
         if (fechaIni && fechaFin) {
-          url = `https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
+          url = `https://farmaciamontecinoweb.onrender.com/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
         }
 
         const responseVentas = await fetch(url);
@@ -126,7 +126,7 @@ function HistorialVentasCliente() {
   const handlePdfClick = async (idventa: number) => {
     try {
       const responseDetalleVenta = await fetch(
-        `https://farmaciamontecino.onrender.com/api/Ventas/listarVentaDetalleVenta?idventa=${idventa}`
+        `https://farmaciamontecinoweb.onrender.com/api/Ventas/listarVentaDetalleVenta?idventa=${idventa}`
       );
       const dataDetalleVenta = await responseDetalleVenta.json();
       setDetalleVenta(dataDetalleVenta);
@@ -254,7 +254,7 @@ function HistorialVentasCliente() {
     if (window.confirm("¿Está seguro de eliminar esta venta?")) {
       try {
         const response = await fetch(
-          `https://farmaciamontecino.onrender.com/api/Ventas/${id}`,
+          `https://farmaciamontecinoweb.onrender.com/api/Ventas/${id}`,
           {
             method: "DELETE",
           }

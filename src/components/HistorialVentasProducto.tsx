@@ -54,7 +54,7 @@ function HistorialVentasProducto() {
     return getProductosVendidos().reduce((total, producto) => total + producto.total, 0);
   };
 useEffect(() => {
-  fetch('https://farmaciamontecino.onrender.com/api/Configuracions/ListarConfiguracionActivos')
+  fetch('https://farmaciamontecinoweb.onrender.com/api/Configuracions/ListarConfiguracionActivos')
     .then(response => response.json())
     .then(data => setConfiguracion(data))
 }, []) ;
@@ -62,14 +62,14 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         const responseProductos = await fetch(
-          "https://farmaciamontecino.onrender.com/api/Productos/ListarProductosActivos"
+          "https://farmaciamontecinoweb.onrender.com/api/Productos/ListarProductosActivos"
         );
         const dataProductos = await responseProductos.json();
         setProductos(dataProductos);
 
-        let url = "https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasActivos";
+        let url = "https://farmaciamontecinoweb.onrender.com/api/Ventas/ListarVentasActivos";
         if (fechaIni && fechaFin) {
-          url = `https://farmaciamontecino.onrender.com/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
+          url = `https://farmaciamontecinoweb.onrender.com/api/Ventas/ListarVentasFecha?fechaIni=${fechaIni}&fechafin=${fechaFin}`;
         }
 
         const responseVentas = await fetch(url);

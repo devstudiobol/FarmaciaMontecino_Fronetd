@@ -16,8 +16,8 @@ const Login: React.FC = () => {
         }
 
         try {
-            const urlCliente = `https://farmaciamontecino.onrender.com/api/Usuarios/Login?correo=${correo}&password=${password}`;
-            const urlEmpleado = `https://farmaciamontecino.onrender.com/api/Usuarios/Login??correo=${correo}&password=${password}`;
+            const urlCliente = `https://farmaciamontecinoweb.onrender.com/api/Usuarios/Login?correo=${correo}&password=${password}`;
+            const urlEmpleado = `https://farmaciamontecinoweb.onrender.com/api/Usuarios/Login??correo=${correo}&password=${password}`;
 
             const responseCliente = await fetch(urlCliente, {
                 method: 'GET',

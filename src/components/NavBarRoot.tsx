@@ -27,7 +27,7 @@ function NavBarRoot() {
 
   const fetchUserPermissions = async (userId) => {
     try {
-      const response = await fetch(`https://farmaciamontecino.onrender.com/api/Detalle_Permisos/ListarDetallePermisosActivosUsuario?id=${userId}`);
+      const response = await fetch(`https://farmaciamontecinoweb.onrender.com/api/Detalle_Permisos/ListarDetallePermisosActivosUsuario?id=${userId}`);
       if (!response.ok) {
         throw new Error('Error al obtener los permisos');
       }

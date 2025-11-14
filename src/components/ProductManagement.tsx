@@ -91,10 +91,10 @@ const ProductManagement: React.FC = () => {
     const fetchData = async () => {
       try {
         const [productsRes, tiposRes, laboratoriosRes, presentacionRes] = await Promise.all([
-          fetch("https://farmaciamontecino.onrender.com/api/Productos/listarProductosConMenorStock"),
-          fetch("https://farmaciamontecino.onrender.com/api/Tipos/ListarTiposActivos"),
-          fetch("https://farmaciamontecino.onrender.com/api/Laboratorios/ListarLaboratoriosActivos"),
-          fetch("https://farmaciamontecino.onrender.com/api/Presentaciones/ListarPresentacionesActivos")
+          fetch("https://farmaciamontecinoweb.onrender.com/api/Productos/listarProductosConMenorStock"),
+          fetch("https://farmaciamontecinoweb.onrender.com/api/Tipos/ListarTiposActivos"),
+          fetch("https://farmaciamontecinoweb.onrender.com/api/Laboratorios/ListarLaboratoriosActivos"),
+          fetch("https://farmaciamontecinoweb.onrender.com/api/Presentaciones/ListarPresentacionesActivos")
         ]);
 
         const [dataProductos, dataTipos, dataLaboratorios, dataPresentacion] = await Promise.all([
@@ -137,7 +137,7 @@ const ProductManagement: React.FC = () => {
   // Manejar eliminación de producto
   const handleEliminar = async (id: number) => {
     try {
-      const response = await fetch(`https://farmaciamontecino.onrender.com/api/Productos/${id}`, {
+      const response = await fetch(`https://farmaciamontecinoweb.onrender.com/api/Productos/${id}`, {
         method: 'DELETE',
       });
 
@@ -166,7 +166,7 @@ const ProductManagement: React.FC = () => {
 
     try {
       const response = await fetch(
-        `https://farmaciamontecino.onrender.com/api/Productos/Crear?codigo=${formData.codigo}&nombre=${formData.nombre}&descripcion=${formData.descripcion}&precio=${formData.precio}&stock=${formData.stock}&vencimiento=${formData.vencimiento}&idtipo=${formData.idtipo}&idlaboratorio=${formData.idlaboratorio}&concentracion=${formData.concentracion}&casilla=${formData.casilla}&idpresentacion=${formData.idpresentacion}&precio_compra=${formData.precio_compra}`,
+        `https://farmaciamontecinoweb.onrender.com/api/Productos/Crear?codigo=${formData.codigo}&nombre=${formData.nombre}&descripcion=${formData.descripcion}&precio=${formData.precio}&stock=${formData.stock}&vencimiento=${formData.vencimiento}&idtipo=${formData.idtipo}&idlaboratorio=${formData.idlaboratorio}&concentracion=${formData.concentracion}&casilla=${formData.casilla}&idpresentacion=${formData.idpresentacion}&precio_compra=${formData.precio_compra}`,
         {
           method: "POST",
           headers: {
@@ -215,7 +215,7 @@ const ProductManagement: React.FC = () => {
       params.append('idtipo', formData.idtipo?.toString() || '0');
        params.append('precio_compra', formData.precio_compra?.toString() || '0');
 
-      const url = `https://farmaciamontecino.onrender.com/api/Productos/Actualizar?${params.toString()}`;
+      const url = `https://farmaciamontecinoweb.onrender.com/api/Productos/Actualizar?${params.toString()}`;
       
       const response = await fetch(url, {
         method: "PUT",

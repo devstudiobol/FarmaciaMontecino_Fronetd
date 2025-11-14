@@ -53,7 +53,7 @@ function Tipos() {
   };
 
   useEffect(() => {
-    fetch("https://farmaciamontecino.onrender.com/api/Tipos/ListarTiposActivos")
+    fetch("https://farmaciamontecinoweb.onrender.com/api/Tipos/ListarTiposActivos")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al obtener los tipos");
@@ -73,7 +73,7 @@ function Tipos() {
 
     try {
       const response = await fetch(
-        `https://farmaciamontecino.onrender.com/api/Tipos/Crear?nombre=${encodeURIComponent(newName)}`,
+        `https://farmaciamontecinoweb.onrender.com/api/Tipos/Crear?nombre=${encodeURIComponent(newName)}`,
         {
           method: "POST",
           headers: {
@@ -110,7 +110,7 @@ function Tipos() {
 
     try {
       const response = await fetch(
-        `https://farmaciamontecino.onrender.com/api/Tipos/Actualizar?id=${editTipoId}&nombre=${encodeURIComponent(newName)}`,
+        `https://farmaciamontecinoweb.onrender.com/api/Tipos/Actualizar?id=${editTipoId}&nombre=${encodeURIComponent(newName)}`,
         {
           method: "PUT",
           headers: {
@@ -140,7 +140,7 @@ function Tipos() {
   const handleEliminar = async (id: number) => {
     try {
       const response = await fetch(
-        `https://farmaciamontecino.onrender.com/api/Tipos/${id}`,
+        `https://farmaciamontecinoweb.onrender.com/api/Tipos/${id}`,
         {
           method: "DELETE",
         }
